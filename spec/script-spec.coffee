@@ -2,6 +2,7 @@ script = require '../lib/script'
 ScriptView = require '../lib/script-view'
 
 {WorkspaceView} = require('atom')
+{EditorView} = require('atom')
 
 # Use the command `window:run-package-specs` (cmd-alt-ctrl-p) to run specs.
 #
@@ -9,25 +10,27 @@ ScriptView = require '../lib/script-view'
 # or `fdescribe`). Remove the `f` to unfocus the block.
 
 describe "script", ->
-  activationPromise = null
+  [activationPromise] = []
 
   beforeEach ->
     atom.workspaceView = new WorkspaceView
+    atom.workspaceView.openSync('sample.js')
+    atom.workspaceView.simulateDomAttachment()
     activationPromise = atom.packages.activatePackage('script')
 
   describe "when the script:run-selection event is triggered" +
            " and text is selected", ->
     it "runs the selected text in an interpreter", ->
 
-      expect(atom.workspaceView.find('.script')).not.toExist()
+      spyOn(ScriptView.prototype, 'initialize').not.toHaveBeenCalled()
 
-      atom.workspaceView.trigger 'script:run-selection'
+      expect(atom.workspaceView.find('.script')).not.toExist()
 
       waitsForPromise ->
         activationPromise
 
       runs ->
-        atom.workspaceView.trigger 'script:run-selection'
+        #atom.workspaceView.trigger 'script:run-selection'
 
   #describe "when the script:toggle event is triggered", ->
   #  it "attaches and then detaches the view", ->
