@@ -1,4 +1,7 @@
 script = require '../lib/script'
+ScriptView = require '../lib/script-view'
+
+{WorkspaceView} = require('atom')
 
 # Use the command `window:run-package-specs` (cmd-alt-ctrl-p) to run specs.
 #
@@ -12,18 +15,32 @@ describe "script", ->
     atom.workspaceView = new WorkspaceView
     activationPromise = atom.packages.activatePackage('script')
 
-  describe "when the script:toggle event is triggered", ->
-    it "attaches and then detaches the view", ->
+  describe "when the script:run-selection event is triggered" +
+           " and text is selected", ->
+    it "runs the selected text in an interpreter", ->
+
       expect(atom.workspaceView.find('.script')).not.toExist()
 
-      # This is an activation event, triggering it will cause the package to be
-      # activated.
-      atom.workspaceView.trigger 'script:toggle'
+      atom.workspaceView.trigger 'script:run-selection'
 
       waitsForPromise ->
         activationPromise
 
       runs ->
-        expect(atom.workspaceView.find('.script')).toExist()
-        atom.workspaceView.trigger 'script:toggle'
-        expect(atom.workspaceView.find('.script')).not.toExist()
+        atom.workspaceView.trigger 'script:run-selection'
+
+  #describe "when the script:toggle event is triggered", ->
+  #  it "attaches and then detaches the view", ->
+  #    expect(atom.workspaceView.find('.script')).not.toExist()
+#
+#      # This is an activation event, triggering it will cause the package to be
+#      # activated.
+#      atom.workspaceView.trigger 'script:toggle'
+#
+#      waitsForPromise ->
+#        activationPromise
+#
+#      runs ->
+#        expect(atom.workspaceView.find('.script')).toExist()
+#        atom.workspaceView.trigger 'script:toggle'
+#        expect(atom.workspaceView.find('.script')).not.toExist()
