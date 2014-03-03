@@ -22,15 +22,19 @@ describe "script", ->
            " and text is selected", ->
     it "runs the selected text in an interpreter", ->
 
-      spyOn(ScriptView.prototype, 'initialize').not.toHaveBeenCalled()
+      console.log(ScriptView)
+
+      #spyOn(ScriptView.prototype, 'initialize').not.toHaveBeenCalled()
 
       expect(atom.workspaceView.find('.script')).not.toExist()
+
+      atom.workspaceView.getActiveView().trigger 'script:run-selection'
 
       waitsForPromise ->
         activationPromise
 
       runs ->
-        #atom.workspaceView.trigger 'script:run-selection'
+
 
   #describe "when the script:toggle event is triggered", ->
   #  it "attaches and then detaches the view", ->
