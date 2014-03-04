@@ -22,7 +22,11 @@ describe "script", ->
            " and text is selected", ->
     it "runs the selected text in an interpreter", ->
 
-      console.log(ScriptView)
+      editor = atom.workspace.getActiveEditor()
+
+      console.log(editor)
+
+      leftEditor = atom.workspaceView.getActiveView()
 
       #spyOn(ScriptView.prototype, 'initialize').not.toHaveBeenCalled()
 
