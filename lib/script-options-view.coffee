@@ -41,12 +41,12 @@ class ScriptOptionsView extends View
           @div class: 'block', =>
             css = 'btn inline-block-tight'
             @button class: "btn #{css}", click: 'close', 'Close'
-            @button class: "btn #{css}", click: 'run', 'Run'
+            @button class: "btn #{css}", click: 'save', 'Save'
+            @button class: "btn #{css}", click: 'run', 'Save & Run'
 
   initialize: (@runOptions) ->
     atom.workspaceView.command 'script:run-options', => @toggleScriptOptions()
-    atom.workspaceView.command 'script:close-options', =>
-      @toggleScriptOptions 'hide'
+    atom.workspaceView.command 'script:close-options', => @toggleScriptOptions 'hide'
     atom.workspaceView.command 'script:save-options', => @saveOptions()
     atom.workspaceView.prependToTop this
     @toggleScriptOptions 'hide'
@@ -68,6 +68,10 @@ class ScriptOptionsView extends View
     @runOptions.scriptArgs = splitArgs @inputScriptArgs
 
   close: ->
+    atom.workspaceView.trigger 'script:close-options'
+
+  save: ->
+    atom.workspaceView.trigger 'script:save-options'
     atom.workspaceView.trigger 'script:close-options'
 
   run: ->
